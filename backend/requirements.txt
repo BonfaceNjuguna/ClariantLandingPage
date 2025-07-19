@@ -3,6 +3,6 @@ uvicorn[standard]
 python-dotenv
 sqlalchemy
 psycopg2-binary
-pydantic
+pydantic-settings
 httpx
 alembic
