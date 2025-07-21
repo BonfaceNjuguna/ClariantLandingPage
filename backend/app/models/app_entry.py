@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship
 from app.core.database import Base
 
 class AppEntry(Base):
@@ -11,3 +12,6 @@ class AppEntry(Base):
     url = Column(String, nullable=True)
     port = Column(Integer, nullable=False)
     status = Column(String, nullable=False)  # "Active" or "Inactive"
+
+    created_by_user_id = Column(Integer, ForeignKey("users.id"))
+    created_by = relationship("User", backref="apps_created")

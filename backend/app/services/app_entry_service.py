@@ -1,4 +1,4 @@
-from pydantic import BaseModel, HttpUrl, validator
+from pydantic import BaseModel, HttpUrl
 from typing import Optional, Literal
 
 class AppBase(BaseModel):
