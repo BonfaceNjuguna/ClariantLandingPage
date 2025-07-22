@@ -1,11 +1,11 @@
-from pydantic import BaseModel, HttpUrl
+from pydantic import BaseModel
 from typing import Optional, Literal
 
 class AppBase(BaseModel):
     name: str
     owner: str
     description: Optional[str] = None
-    url: Optional[HttpUrl] = None
+    url: Optional[str] = None  # <-- change from HttpUrl to str
     port: int
     status: Literal["Active", "Inactive"]
 

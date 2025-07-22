@@ -16,8 +16,7 @@ const AppTable = () => {
   const [showModal, setShowModal] = useState(false);
   const [editData, setEditData] = useState<AppEntry | null>(null);
   const { user } = useAuth();
-
-  const apps = useAppEntries(perPage, currentPage, search);
+  const { apps, total } = useAppEntries(perPage, currentPage, search);
 
   const handleAddNew = async (data: AppEntryInput) => {
     if (!user) return;
@@ -95,7 +94,12 @@ const AppTable = () => {
         </table>
       </div>
 
-      <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} />
+      <Pagination
+  currentPage={currentPage}
+  setCurrentPage={setCurrentPage}
+  total={total}
+  perPage={perPage}
+/>
 
       <AppFormModal
         isOpen={showModal}

@@ -8,7 +8,7 @@ export const getAppEntries = async (
   page: number,
   search: string,
   token: string
-): Promise<AppEntry[]> => {
+): Promise<{ items: AppEntry[]; total: number }> => {
   const params: Record<string, any> = {
     limit,
     skip: (page - 1) * limit,
