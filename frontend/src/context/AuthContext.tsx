@@ -1,29 +1,47 @@
-import { createContext, useContext, useState } from "react";
-import type { ReactNode } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
-export interface AuthUser {
+interface User {
   email: string;
   name: string;
   token: string;
-  provider: "google" | "microsoft";
+  provider: string;
 }
 
 interface AuthContextType {
-  user: AuthUser | null;
-  setUser: (user: AuthUser | null) => void;
+  user: User | null;
+  setUser: (user: User | null) => void;
+  logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
-  setUser: () => {},
+  setUser: () => { },
+  logout: () => { }
 });
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<AuthUser | null>(null);
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const [user, setUserState] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("user");
+    if (saved) setUserState(JSON.parse(saved));
+    setLoading(false);
+  }, []);
+
+  const setUser = (user: User | null) => {
+    setUserState(user);
+    if (user) localStorage.setItem("user", JSON.stringify(user));
+    else localStorage.removeItem("user");
+  };
+
+  const logout = () => {
+    setUser(null);
+  };
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
-      {children}
+    <AuthContext.Provider value={{ user, setUser, logout }}>
+      {!loading && children}
     </AuthContext.Provider>
   );
 };

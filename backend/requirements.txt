@@ -7,3 +7,5 @@ pydantic-settings
 httpx
 alembic
 python-jose
+PyJWT
+email-validator

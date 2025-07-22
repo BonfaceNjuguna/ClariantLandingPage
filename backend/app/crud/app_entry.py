@@ -3,8 +3,11 @@ from app.models.app_entry import AppEntry
 from app.schemas.app_entry import AppCreate
 from fastapi import HTTPException
 
-def get_all_apps(db: Session):
-    return db.query(AppEntry).all()
+def get_all_apps(db: Session, limit=10, skip=0, search=""):
+    query = db.query(AppEntry)
+    if search:
+        query = query.filter(AppEntry.name.ilike(f"%{search}%"))
+    return query.offset(skip).limit(limit).all()
 
 def create_app_entry(db: Session, app_data: AppCreate, user_id: int):
     new_app = AppEntry(
