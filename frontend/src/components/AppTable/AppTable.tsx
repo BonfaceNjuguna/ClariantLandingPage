@@ -59,7 +59,7 @@ const AppTable = () => {
   };
 
   return (
-    <div>
+    <div className="bg-white rounded-xl shadow-lg p-6 mt-6">
       <AppTableToolbar
         perPage={perPage}
         setPerPage={setPerPage}
@@ -68,29 +68,32 @@ const AppTable = () => {
         onAdd={() => { setEditData(null); setShowModal(true); }}
       />
 
-      <table className="w-full text-sm">
-        <thead className="bg-gray-100">
-          <tr>
-            <th className="p-2">Name</th>
-            <th className="p-2">Owner</th>
-            <th className="p-2">Description</th>
-            <th className="p-2">URL</th>
-            <th className="p-2">Port</th>
-            <th className="p-2">Status</th>
-            <th className="p-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {apps.map(app => (
-            <AppTableRow
-              key={app.id}
-              app={app}
-              onEdit={() => handleEdit(app)}
-              onDelete={() => handleDelete(app.id)}
-            />
-          ))}
-        </tbody>
-      </table>
+      <div className="overflow-x-auto">
+        <table className="min-w-full text-sm rounded-lg overflow-hidden">
+          <thead className="bg-gradient-to-r from-blue-50 to-blue-100">
+            <tr>
+              <th className="p-3 font-semibold text-gray-700">Name</th>
+              <th className="p-3 font-semibold text-gray-700">Owner</th>
+              <th className="p-3 font-semibold text-gray-700">Description</th>
+              <th className="p-3 font-semibold text-gray-700">URL</th>
+              <th className="p-3 font-semibold text-gray-700">Port</th>
+              <th className="p-3 font-semibold text-gray-700">Status</th>
+              <th className="p-3 font-semibold text-gray-700">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {apps.map((app, idx) => (
+              <AppTableRow
+                key={app.id}
+                app={app}
+                onEdit={() => handleEdit(app)}
+                onDelete={() => handleDelete(app.id)}
+                className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}
+              />
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} />
 

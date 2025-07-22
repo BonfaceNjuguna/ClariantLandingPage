@@ -9,7 +9,7 @@ def send_email(to_email: str, otp: str):
     smtp_pass = settings.SMTP_PASS
 
     msg = EmailMessage()
-    msg["Subject"] = "Your Clariant App Landing Page OTP Code"
+    msg["Subject"] = "Your Clariant Apps Landing Page OTP Code"
     msg["From"] = smtp_user
     msg["To"] = to_email
     msg.set_content(f"Your OTP code is: {otp}")
