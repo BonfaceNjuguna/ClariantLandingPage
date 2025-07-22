@@ -14,7 +14,7 @@ def create_app_entry(db: Session, app_data: AppCreate, user_id: int):
         name=app_data.name,
         owner=app_data.owner,
         description=app_data.description,
-        url=app_data.url,
+        url=str(app_data.url) if app_data.url is not None else None,
         port=app_data.port,
         status=app_data.status,
         created_by_user_id=user_id
@@ -43,7 +43,9 @@ def update_app(db: Session, app_id: int, app_data: AppCreate):
     if not app:
         raise HTTPException(status_code=404, detail="App not found")
     
-    for key, value in app_data.dict().items():
+    for key, value in app_data.model_dump().items():
+        if key == "url" and value is not None:
+            value = str(value)  # Convert HttpUrl to string
         setattr(app, key, value)
     
     db.commit()

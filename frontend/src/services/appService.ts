@@ -32,3 +32,23 @@ export const createAppEntry = async (
   });
   return res.data;
 };
+
+export const updateAppEntry = async (
+  id: number,
+  data: AppEntryInput,
+  token: string
+): Promise<AppEntry> => {
+  const res = await axios.put(`${API_URL}/apps/${id}`, data, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+};
+
+export const deleteAppEntry = async (
+  id: number,
+  token: string
+): Promise<void> => {
+  await axios.delete(`${API_URL}/apps/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};

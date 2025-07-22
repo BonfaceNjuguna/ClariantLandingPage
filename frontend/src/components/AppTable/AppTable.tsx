@@ -4,15 +4,17 @@ import AppTableRow from "./AppTableRow";
 import AppTableToolbar from "./AppTableToolbar";
 import Pagination from "../Shared/Pagination";
 import AppFormModal from "../AppForm/AppFormModal";
-import type { AppEntryInput } from "../../types/index";
+import type { AppEntry, AppEntryInput } from "../../types/index";
 import { createAppEntry } from "../../services/appService";
 import { useAuth } from "../../context/AuthContext";
+import { deleteAppEntry, updateAppEntry } from "../../services/appService";
 
 const AppTable = () => {
   const [perPage, setPerPage] = useState(10);
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [showModal, setShowModal] = useState(false);
+  const [editData, setEditData] = useState<AppEntry | null>(null);
   const { user } = useAuth();
 
   const apps = useAppEntries(perPage, currentPage, search);
@@ -22,10 +24,37 @@ const AppTable = () => {
     try {
       await createAppEntry(data, user.token);
       setShowModal(false);
-      // trigger refetch manually or reload
-      window.location.reload(); // or better: use a fetchApps ref callback
+      window.location.reload();
     } catch (err) {
       console.error("Error adding app", err);
+    }
+  };
+
+  const handleEdit = (app: AppEntry) => {
+    setEditData(app);
+    setShowModal(true);
+  };
+
+  const handleUpdate = async (data: AppEntryInput) => {
+    if (!user || !editData) return;
+    try {
+      await updateAppEntry(editData.id, data, user.token);
+      setShowModal(false);
+      setEditData(null);
+      window.location.reload();
+    } catch (err) {
+      console.error("Error updating app", err);
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    if (!user) return;
+    if (!window.confirm("Are you sure you want to delete this app?")) return;
+    try {
+      await deleteAppEntry(id, user.token);
+      window.location.reload();
+    } catch (err) {
+      console.error("Error deleting app", err);
     }
   };
 
@@ -36,23 +65,30 @@ const AppTable = () => {
         setPerPage={setPerPage}
         search={search}
         setSearch={setSearch}
-        onAdd={() => setShowModal(true)}
+        onAdd={() => { setEditData(null); setShowModal(true); }}
       />
 
-      <table className="w-full border text-sm">
+      <table className="w-full text-sm">
         <thead className="bg-gray-100">
           <tr>
-            <th className="p-2 border">Name</th>
-            <th className="p-2 border">Owner</th>
-            <th className="p-2 border">Description</th>
-            <th className="p-2 border">URL</th>
-            <th className="p-2 border">Port</th>
-            <th className="p-2 border">Status</th>
-            <th className="p-2 border">Actions</th>
+            <th className="p-2">Name</th>
+            <th className="p-2">Owner</th>
+            <th className="p-2">Description</th>
+            <th className="p-2">URL</th>
+            <th className="p-2">Port</th>
+            <th className="p-2">Status</th>
+            <th className="p-2">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {apps.map(app => <AppTableRow key={app.id} app={app} />)}
+          {apps.map(app => (
+            <AppTableRow
+              key={app.id}
+              app={app}
+              onEdit={() => handleEdit(app)}
+              onDelete={() => handleDelete(app.id)}
+            />
+          ))}
         </tbody>
       </table>
 
@@ -60,9 +96,9 @@ const AppTable = () => {
 
       <AppFormModal
         isOpen={showModal}
-        onClose={() => setShowModal(false)}
-        onSubmit={handleAddNew}
-        initialData={null}
+        onClose={() => { setShowModal(false); setEditData(null); }}
+        onSubmit={editData ? handleUpdate : handleAddNew}
+        initialData={editData}
       />
     </div>
   );

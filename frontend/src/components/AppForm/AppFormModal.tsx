@@ -101,8 +101,8 @@ const AppFormModal = ({ isOpen, onClose, onSubmit, initialData }: Props) => {
             className="border w-full px-3 py-2 rounded"
           >
             <option value="">Select Status</option>
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
           </select>
           {errors.status && <p className="text-red-600 text-sm">{errors.status.message}</p>}
 
