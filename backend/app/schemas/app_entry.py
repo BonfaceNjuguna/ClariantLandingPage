@@ -3,7 +3,7 @@ from typing import Optional, Literal
 
 class AppBase(BaseModel):
     name: str
-    owner: str
+    owner: Optional[str] = None
     description: Optional[str] = None
     url: Optional[str] = None
     comment: Optional[str] = None

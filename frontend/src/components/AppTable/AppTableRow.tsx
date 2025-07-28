@@ -13,21 +13,21 @@ const AppTableRow = ({
   className?: string;
 }) => {
   return (
-    <tr className={`text-center transition hover:bg-blue-50 ${className}`}>
-      <td className="p-3">{app.name}</td>
-      <td className="p-3">{app.owner}</td>
-      <td className="p-3">{app.description}</td>
-      <td className="p-3">
+    <tr className={`transition hover:bg-blue-50 ${className}`}>
+      <td className="p-3 text-left">{app.name}</td>
+      <td className="p-3 text-left">{app.owner}</td>
+      <td className="p-3 text-left">{app.description}</td>
+      <td className="p-3 text-left">
         <a href={app.url} target="_blank" className="text-blue-500 underline">{app.url}</a>
       </td>
-      <td className="p-3 min-w-[200px]">{app.comment}</td>
-      <td className="p-3">
+      <td className="p-3 min-w-[200px] text-left">{app.comment}</td>
+      <td className="p-3 text-left">
         <span className={`px-2 py-1 rounded-full text-xs font-semibold ${app.status === "Active" ? "bg-green-100 text-green-700" : "bg-gray-200 text-gray-700"}`}>
           {app.status}
         </span>
       </td>
-      <td className="p-3">
-        <div className="flex justify-center gap-2">
+      <td className="p-3 text-left">
+        <div className="flex gap-2">
           <button className="text-yellow-500 hover:text-yellow-700" onClick={onEdit}><FaEdit /></button>
           <button className="text-red-600 hover:text-red-800" onClick={onDelete}><FaTrash /></button>
         </div>

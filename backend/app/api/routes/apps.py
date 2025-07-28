@@ -22,8 +22,12 @@ def list_apps(
     if search:
         query = query.filter(AppEntry.name.ilike(f"%{search}%"))
     total = query.count()
-    apps = query.offset(skip).limit(limit).all()
-    # Convert each SQLAlchemy object to Pydantic model
+    apps = (
+        query.order_by(AppEntry.updated_at.desc(), AppEntry.created_at.desc())
+        .offset(skip)
+        .limit(limit)
+        .all()
+    )
     items = [AppOut.model_validate(app) for app in apps]
     return {"items": items, "total": total}
 

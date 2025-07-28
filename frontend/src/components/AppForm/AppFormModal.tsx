@@ -60,7 +60,7 @@ const AppFormModal = ({ isOpen, onClose, onSubmit, initialData }: Props) => {
 
           <input
             placeholder="Owner"
-            {...register("owner", { required: "Owner is required" })}
+            {...register("owner")}
             className="border w-full px-3 py-2 rounded"
           />
           {errors.owner && <p className="text-red-600 text-sm">{errors.owner.message}</p>}
@@ -74,7 +74,6 @@ const AppFormModal = ({ isOpen, onClose, onSubmit, initialData }: Props) => {
           <input
             placeholder="URL"
             {...register("url", {
-              required: "URL is required",
               pattern: {
                 value: /^(http|https):\/\//,
                 message: "Must start with http:// or https://",
@@ -86,16 +85,13 @@ const AppFormModal = ({ isOpen, onClose, onSubmit, initialData }: Props) => {
 
           <input
             placeholder="Comment"
-            {...register("comment", {
-              required: "Comment is required",
-              minLength: { value: 2, message: "Comment must be at least 2 characters" },
-            })}
+            {...register("comment")}
             className="border w-full px-3 py-2 rounded min-w-[300px]" 
           />
           {errors.comment && <p className="text-red-600 text-sm">{errors.comment.message}</p>}
 
           <select
-            {...register("status", { required: "Status is required" })}
+            {...register("status")}
             className="border w-full px-3 py-2 rounded"
           >
             <option value="">Select Status</option>

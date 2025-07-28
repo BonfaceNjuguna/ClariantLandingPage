@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
+from datetime import datetime, timezone
 from app.core.database import Base
 
 class AppEntry(Base):
@@ -15,3 +16,6 @@ class AppEntry(Base):
 
     created_by_user_id = Column(Integer, ForeignKey("users.id"))
     created_by = relationship("User", backref="apps_created")
+
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
+    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc), nullable=False)

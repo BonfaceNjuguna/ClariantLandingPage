@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 from app.models.app_entry import AppEntry
 from app.schemas.app_entry import AppCreate
 from fastapi import HTTPException
+from datetime import datetime, timezone
 
 def get_all_apps(db: Session, limit=10, skip=0, search=""):
     query = db.query(AppEntry)
@@ -48,6 +49,7 @@ def update_app(db: Session, app_id: int, app_data: AppCreate):
             value = str(value)
         setattr(app, key, value)
     
+    app.updated_at = datetime.now(timezone.utc)
     db.commit()
     db.refresh(app)
     return app
