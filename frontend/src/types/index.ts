@@ -4,7 +4,7 @@ export interface AppEntry {
   owner: string;
   description: string;
   url: string;
-  port: number;
+  comment: string;
   status: string;
   created_by_user_id?: number;
 }

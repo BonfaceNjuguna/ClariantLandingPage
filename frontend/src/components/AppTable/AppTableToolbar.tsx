@@ -26,13 +26,13 @@ const AppTableToolbar = ({
             <option key={num} value={num}>{num}</option>
           ))}
         </select>
-        <label className="text-sm">Entries:</label>
+        <label className="text-sm">Entries</label>
       </div>
 
       <input
         type="text"
         placeholder="Search..."
-        className="border px-3 py-1 rounded w-64"
+        className="border px-3 py-1 rounded w-64 flex justify-start"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />

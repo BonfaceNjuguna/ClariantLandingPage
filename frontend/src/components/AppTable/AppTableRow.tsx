@@ -20,7 +20,7 @@ const AppTableRow = ({
       <td className="p-3">
         <a href={app.url} target="_blank" className="text-blue-500 underline">{app.url}</a>
       </td>
-      <td className="p-3">{app.port}</td>
+      <td className="p-3 min-w-[200px]">{app.comment}</td>
       <td className="p-3">
         <span className={`px-2 py-1 rounded-full text-xs font-semibold ${app.status === "Active" ? "bg-green-100 text-green-700" : "bg-gray-200 text-gray-700"}`}>
           {app.status}

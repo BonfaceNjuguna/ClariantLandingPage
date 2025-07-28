@@ -3,12 +3,13 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import LoginPage from "./pages/LoginPage";
+import Footer from './components/Footer/Footer';
 import DashboardPage from "./pages/DashboardPage";
 import type { JSX } from "react";
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   const { user } = useAuth();
-  if (user === undefined) return null; // or a loading spinner
+  if (user === undefined) return null;
   return user ? children : <Navigate to="/" />;
 };
 
@@ -28,6 +29,7 @@ function App() {
               }
             />
           </Routes>
+          <Footer />
         </Router>
       </AuthProvider>
     </GoogleOAuthProvider>

@@ -15,7 +15,7 @@ def create_app_entry(db: Session, app_data: AppCreate, user_id: int):
         owner=app_data.owner,
         description=app_data.description,
         url=str(app_data.url) if app_data.url is not None else None,
-        port=app_data.port,
+        comment=app_data.comment,
         status=app_data.status,
         created_by_user_id=user_id
     )
@@ -45,7 +45,7 @@ def update_app(db: Session, app_id: int, app_data: AppCreate):
     
     for key, value in app_data.model_dump().items():
         if key == "url" and value is not None:
-            value = str(value)  # Convert HttpUrl to string
+            value = str(value)
         setattr(app, key, value)
     
     db.commit()

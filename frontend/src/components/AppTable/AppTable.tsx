@@ -75,7 +75,7 @@ const AppTable = () => {
               <th className="p-3 font-semibold text-gray-700">Owner</th>
               <th className="p-3 font-semibold text-gray-700">Description</th>
               <th className="p-3 font-semibold text-gray-700">URL</th>
-              <th className="p-3 font-semibold text-gray-700">Port</th>
+              <th className="p-3 font-semibold text-gray-700 min-w-[200px]">Comment</th>
               <th className="p-3 font-semibold text-gray-700">Status</th>
               <th className="p-3 font-semibold text-gray-700">Actions</th>
             </tr>

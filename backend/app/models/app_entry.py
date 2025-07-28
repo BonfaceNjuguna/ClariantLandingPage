@@ -10,8 +10,8 @@ class AppEntry(Base):
     owner = Column(String, nullable=False)
     description = Column(String, nullable=True)
     url = Column(String, nullable=True)
-    port = Column(Integer, nullable=False)
-    status = Column(String, nullable=False)  # "Active" or "Inactive"
+    comment = Column(String, nullable=True)
+    status = Column(String, nullable=False)
 
     created_by_user_id = Column(Integer, ForeignKey("users.id"))
     created_by = relationship("User", backref="apps_created")
