@@ -1,15 +1,25 @@
-from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
+from fastapi import APIRouter, Depends
+from pydantic import BaseModel
+from app.core.oauth import verify_google_token, verify_microsoft_token
+from app.crud.user import update_last_login
 from app.core.dependencies import get_db
-from app.schemas.auth import SendOtpPayload, VerifyOtpPayload
-from app.services.auth_service import handle_send_otp, handle_verify_otp
+from app.models.user import User 
 
 router = APIRouter()
 
-@router.post("/send-otp")
-def send_otp(payload: SendOtpPayload, db: Session = Depends(get_db)):
-    return handle_send_otp(payload, db)
-
-@router.post("/verify-otp")
-def verify_otp(payload: VerifyOtpPayload, db: Session = Depends(get_db)):
-    return handle_verify_otp(payload, db)
+class TokenPayload(BaseModel):
+    token: str
+    provider: str
+    
+@router.post("/login")
+async def login(payload: TokenPayload, db=Depends(get_db)):
+    if payload.provider == "google":
+        user_data = await verify_google_token(payload.token)
+    elif payload.provider == "microsoft":
+        user_data = await verify_microsoft_token(payload.token)
+    else:
+        return {"error": "Unsupported provider"}
+    user = db.query(User).filter(User.email == user_data["email"]).first()
+    if user:
+        update_last_login(db, user)
+    return {"message": "Login successful", "user": user_data}
