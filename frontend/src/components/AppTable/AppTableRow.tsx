@@ -13,7 +13,7 @@ const AppTableRow = ({
   className?: string;
 }) => {
   return (
-    <tr className={`transition hover:bg-blue-50 ${className}`}>
+    <tr className={`transition hover:bg-blue-50 text-[var(--brand-clariant-gray)] ${className}`}>
       <td className="p-3 text-left">{app.name}</td>
       <td className="p-3 text-left">{app.owner}</td>
       <td className="p-3 text-left">{app.description}</td>
@@ -28,8 +28,8 @@ const AppTableRow = ({
       </td>
       <td className="p-3 text-left">
         <div className="flex gap-2">
-          <button className="text-yellow-500 hover:text-yellow-700" onClick={onEdit}><FaEdit /></button>
-          <button className="text-red-600 hover:text-red-800" onClick={onDelete}><FaTrash /></button>
+          <button className="text-[var(--brand-clariant-gray)] hover:text-[var(--brand-clariant-gray)]" onClick={onEdit}><FaEdit /></button>
+          <button className="text-[var(--brand-ept-green)] hover:text-[var(--brand-ept-green)]" onClick={onDelete}><FaTrash /></button>
         </div>
       </td>
     </tr>

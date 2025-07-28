@@ -19,7 +19,7 @@ const Pagination = ({
   return (
     <div className="flex justify-center items-center mt-4 gap-2">
       <button
-        className="px-3 py-1 border rounded disabled:opacity-50"
+        className="px-3 py-1 border rounded disabled:opacity-50 text-[var(--brand-clariant-gray)] hover:bg-[var(--brand-ept-green)]"
         onClick={() => setCurrentPage(currentPage - 1)}
         disabled={currentPage === 1}
       >
@@ -28,11 +28,13 @@ const Pagination = ({
       {pages.map((page) => (
         <button
           key={page}
-          className={`px-3 py-1 border rounded transition ${
-            page === currentPage
-              ? "bg-blue-600 text-white border-blue-600"
-              : "bg-white text-gray-700 hover:bg-blue-50"
-          }`}
+          className={`px-3 py-1 border rounded transition
+            ${
+              page === currentPage
+                ? "bg-[var(--brand-ept-green)] text-[var(--brand-clariant-gray)] border-[var(--brand-ept-green)]"
+                : "bg-white text-[var(--brand-clariant-gray)] hover:bg-[var(--brand-ept-green)]"
+            }
+          `}
           onClick={() => setCurrentPage(page)}
           disabled={page === currentPage}
         >
@@ -40,7 +42,7 @@ const Pagination = ({
         </button>
       ))}
       <button
-        className="px-3 py-1 border rounded disabled:opacity-50"
+        className="px-3 py-1 border rounded disabled:opacity-50 text-[var(--brand-clariant-gray)] hover:bg-[var(--brand-ept-green)]"
         onClick={() => setCurrentPage(currentPage + 1)}
         disabled={currentPage >= maxPage}
       >

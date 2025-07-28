@@ -44,7 +44,7 @@ const AppFormModal = ({ isOpen, onClose, onSubmit, initialData }: Props) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 text-[var(--brand-clariant-gray)]">
       <div className="bg-white p-6 rounded-md shadow-lg w-[90%] max-w-xl">
         <h2 className="text-xl font-bold mb-4">
           {initialData ? "Edit App" : "Add New App"}
@@ -53,7 +53,7 @@ const AppFormModal = ({ isOpen, onClose, onSubmit, initialData }: Props) => {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <input
             placeholder="App Name"
-            {...register("name", { required: "Name is required" })}
+            {...register("name", { required: " App Name is required" })}
             className="border w-full px-3 py-2 rounded"
           />
           {errors.name && <p className="text-red-600 text-sm">{errors.name.message}</p>}
@@ -110,7 +110,7 @@ const AppFormModal = ({ isOpen, onClose, onSubmit, initialData }: Props) => {
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              className="px-4 py-2 rounded bg-[var(--brand-ept-green)] text-[var(--brand-clariant-gray)] hover:bg-[var(--brand-clariant-gray)] hover:text-[var(--brand-ept-green)]"
             >
               {initialData ? "Update" : "Create"}
             </button>

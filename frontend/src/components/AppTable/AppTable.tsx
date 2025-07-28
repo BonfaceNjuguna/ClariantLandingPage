@@ -71,13 +71,13 @@ const AppTable = () => {
         <table className="min-w-full text-sm rounded-lg overflow-hidden">
           <thead className="bg-gradient-to-r from-blue-50 to-blue-100">
             <tr>
-              <th className="p-3 font-semibold text-gray-700 text-left">Name</th>
-              <th className="p-3 font-semibold text-gray-700 text-left">Owner</th>
-              <th className="p-3 font-semibold text-gray-700 text-left">Description</th>
-              <th className="p-3 font-semibold text-gray-700 text-left">URL</th>
-              <th className="p-3 font-semibold text-gray-700 min-w-[200px] text-left">Comment</th>
-              <th className="p-3 font-semibold text-gray-700 text-left">Status</th>
-              <th className="p-3 font-semibold text-gray-700 text-left">Actions</th>
+              <th className="p-3 font-semibold text-[var(--brand-clariant-gray)] text-left">Name</th>
+              <th className="p-3 font-semibold text-[var(--brand-clariant-gray)] text-left">Owner</th>
+              <th className="p-3 font-semibold text-[var(--brand-clariant-gray)] text-left">Description</th>
+              <th className="p-3 font-semibold text-[var(--brand-clariant-gray)] text-left">URL</th>
+              <th className="p-3 font-semibold text-[var(--brand-clariant-gray)] min-w-[200px] text-left">Comment</th>
+              <th className="p-3 font-semibold text-[var(--brand-clariant-gray)] text-left">Status</th>
+              <th className="p-3 font-semibold text-[var(--brand-clariant-gray)] text-left">Actions</th>
             </tr>
           </thead>
           <tbody>

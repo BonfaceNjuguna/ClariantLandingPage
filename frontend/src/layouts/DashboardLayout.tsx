@@ -9,16 +9,16 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     <div className="p-6">
       <Header />
       <div className="flex items-center justify-between mt-6 mb-2">
-        <h1 className="text-2xl font-bold ml-6">EPT Digital Solution Apps</h1>
+        <h1 className="text-2xl font-bold ml-6 text-[var(--brand-clariant-gray)]">EPT Digital Solution Apps</h1>
         <button
           onClick={() => setUser(null)}
-          className="text-red-600 hover:text-red-800 mr-7"
+          className="text-[var(--brand-clariant-gray)] hover:text-[var(--brand-clariant-gray)] mr-7"
           title="Logout"
         >
           <FaSignOutAlt size={24} />
         </button>
       </div>
-      <h2 className="text-xl font-semibold mt-6 mb-4 flex justify-start ml-6">
+      <h2 className="text-xl font-semibold mt-6 mb-4 flex justify-start ml-6 text-[var(--brand-clariant-gray)]">
         Welcome, {user?.name}
       </h2>
       {children}

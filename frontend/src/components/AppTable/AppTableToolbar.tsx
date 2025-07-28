@@ -14,7 +14,7 @@ const AppTableToolbar = ({
   onAdd: () => void;
 }) => {
   return (
-    <div className="flex flex-wrap items-center justify-between mb-4 gap-4">
+    <div className="flex flex-wrap items-center justify-between mb-4 gap-4 text-[var(--brand-clariant-gray)]">
       <div className="flex items-center gap-2">
         <label className="text-sm">Show:</label>
         <select
@@ -32,14 +32,26 @@ const AppTableToolbar = ({
       <input
         type="text"
         placeholder="Search..."
-        className="border px-3 py-1 rounded w-64 flex justify-start"
+        className="border px-3 py-1 rounded w-64 flex justify-start text-[var(--brand-clariant-gray)]"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
 
       <button
         onClick={onAdd}
-        className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        className="flex items-center gap-2 px-4 py-2 rounded transition-colors"
+        style={{
+          backgroundColor: "var(--brand-ept-green)",
+          color: "var(--brand-clariant-gray)",
+        }}
+        onMouseOver={e => {
+          (e.currentTarget as HTMLButtonElement).style.backgroundColor = "var(--brand-clariant-gray)";
+          (e.currentTarget as HTMLButtonElement).style.color = "#fff";
+        }}
+        onMouseOut={e => {
+          (e.currentTarget as HTMLButtonElement).style.backgroundColor = "var(--brand-ept-green)";
+          (e.currentTarget as HTMLButtonElement).style.color = "var(--brand-clariant-gray)"; 
+        }}
       >
         <FaPlus /> Add New App
       </button>

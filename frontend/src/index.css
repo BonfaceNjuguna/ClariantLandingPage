@@ -1,1 +1,7 @@
 @import "tailwindcss";
+
+:root {
+  --brand-ept-green: #D9F0FF;
+  --brand-clariant-gray: #333332;
+  --brand-ept-gray: #909191;
+}
