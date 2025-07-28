@@ -14,7 +14,7 @@ export type AppEntryInput = {
   owner: string;
   description: string;
   url: string;
-  port: number;
+  comment: string;
   status: string;
 };
 
@@ -33,7 +33,7 @@ const AppFormModal = ({ isOpen, onClose, onSubmit, initialData }: Props) => {
         owner: initialData.owner,
         description: initialData.description,
         url: initialData.url,
-        port: initialData.port,
+        comment: initialData.comment,
         status: initialData.status,
       });
     } else {
