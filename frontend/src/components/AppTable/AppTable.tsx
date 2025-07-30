@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAppEntries } from "../../hooks/useAppEntries";
+import { useSearchParams } from "react-router-dom";
 import AppTableRow from "./AppTableRow";
 import AppTableToolbar from "./AppTableToolbar";
 import Pagination from "../Shared/Pagination";
@@ -10,9 +11,11 @@ import { useAuth } from "../../context/AuthContext";
 import { deleteAppEntry, updateAppEntry } from "../../services/appService";
 
 const AppTable = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialPage = parseInt(searchParams.get("page") || "1", 10);
   const [perPage, setPerPage] = useState(10);
   const [search, setSearch] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(initialPage);
   const [showModal, setShowModal] = useState(false);
   const [editData, setEditData] = useState<AppEntry | null>(null);
   const { user } = useAuth();
@@ -28,6 +31,13 @@ const AppTable = () => {
       console.error("Error adding app", err);
     }
   };
+
+  useEffect(() => {
+    setSearchParams(params => {
+      params.set("page", String(currentPage));
+      return params;
+    });
+  }, [currentPage, setSearchParams]);
 
   const handleEdit = (app: AppEntry) => {
     setEditData(app);
