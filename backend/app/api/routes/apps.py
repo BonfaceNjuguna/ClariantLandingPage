@@ -16,18 +16,25 @@ def list_apps(
     user: User = Depends(get_current_user),
     limit: int = Query(10, ge=1),
     skip: int = Query(0, ge=0),
-    search: str = Query("", alias="search")
+    search: str = Query("", alias="search"),
+    status: str = Query(None),
+    sortBy: str = Query(None),
+    sortOrder: str = Query("asc")
 ):
     query = db.query(AppEntry)
     if search:
         query = query.filter(AppEntry.name.ilike(f"%{search}%"))
+    if status:
+        query = query.filter(AppEntry.status == status)
+    if sortBy == "name":
+        if sortOrder == "asc":
+            query = query.order_by(AppEntry.name.asc())
+        else:
+            query = query.order_by(AppEntry.name.desc())
+    else:
+        query = query.order_by(AppEntry.updated_at.desc(), AppEntry.created_at.desc())
     total = query.count()
-    apps = (
-        query.order_by(AppEntry.updated_at.desc(), AppEntry.created_at.desc())
-        .offset(skip)
-        .limit(limit)
-        .all()
-    )
+    apps = query.offset(skip).limit(limit).all()
     items = [AppOut.model_validate(app) for app in apps]
     return {"items": items, "total": total}
 

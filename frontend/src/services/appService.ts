@@ -7,15 +7,19 @@ export const getAppEntries = async (
   limit: number,
   page: number,
   search: string,
-  token: string
+  token: string,
+  status?: string,
+  sortBy?: string,
+  sortOrder?: string
 ): Promise<{ items: AppEntry[]; total: number }> => {
   const params: Record<string, any> = {
     limit,
     skip: (page - 1) * limit,
   };
-  if (search && search.trim() !== "") {
-    params.search = search;
-  }
+  if (search && search.trim() !== "") params.search = search;
+  if (status) params.status = status;
+  if (sortBy) params.sortBy = sortBy;
+  if (sortOrder) params.sortOrder = sortOrder;
   const res = await axios.get(`${API_URL}/apps/`, {
     headers: { Authorization: `Bearer ${token}` },
     params,

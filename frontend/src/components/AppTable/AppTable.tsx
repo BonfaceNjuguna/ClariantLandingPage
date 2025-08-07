@@ -19,7 +19,10 @@ const AppTable = () => {
   const [showModal, setShowModal] = useState(false);
   const [editData, setEditData] = useState<AppEntry | null>(null);
   const { user } = useAuth();
-  const { apps, total } = useAppEntries(perPage, currentPage, search);
+  const [status, setStatus] = useState("");
+  const [sortBy, setSortBy] = useState<"name" | "">("");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const { apps, total } = useAppEntries(perPage, currentPage, search, status, sortBy, sortOrder);
 
   const handleAddNew = async (data: AppEntryInput) => {
     if (!user) return;
@@ -67,6 +70,11 @@ const AppTable = () => {
     }
   };
 
+  const handleSortName = () => {
+    setSortBy("name");
+    setSortOrder(prev => (prev === "asc" ? "desc" : "asc"));
+  };
+
   return (
     <div className="bg-white rounded-xl shadow-lg p-6 mt-6">
       <AppTableToolbar
@@ -77,11 +85,41 @@ const AppTable = () => {
         onAdd={() => { setEditData(null); setShowModal(true); }}
       />
 
+    <div className="flex justify-end gap-2 mb-4 items-end">
+      {["", "Active", "Inactive"].map((s) => (
+        <button
+          key={s}
+          onClick={() => setStatus(s)}
+          className={`px-4 py-1 rounded-full border transition
+            ${
+              status === s
+                ? s === "Active"
+                  ? "bg-green-100 text-green-700 border-green-300 font-semibold"
+                  : s === "Inactive"
+                  ? "bg-gray-200 text-gray-700 border-gray-400 font-semibold"
+                  : "bg-[var(--brand-ept-green)] text-[var(--brand-clariant-gray)] border-[var(--brand-ept-green)] font-semibold"
+                : "bg-white text-[var(--brand-clariant-gray)] hover:bg-[var(--brand-ept-green)]"
+            }
+          `}
+        >
+          {s === "" ? "All" : s}
+        </button>
+      ))}
+    </div>
+
       <div className="overflow-x-auto">
         <table className="min-w-full text-sm rounded-lg overflow-hidden">
           <thead className="bg-gradient-to-r from-blue-50 to-blue-100">
             <tr>
-              <th className="p-3 font-semibold text-[var(--brand-clariant-gray)] text-left">Name</th>
+              <th
+                className="p-3 font-semibold text-[var(--brand-clariant-gray)] text-left cursor-pointer select-none"
+                onClick={handleSortName}
+              >
+                Name
+                <span className="ml-1">
+                  {sortOrder === "asc" ? "▲" : "▼"}
+                </span>
+              </th>              
               <th className="p-3 font-semibold text-[var(--brand-clariant-gray)] text-left">Owner</th>
               <th className="p-3 font-semibold text-[var(--brand-clariant-gray)] text-left">Description</th>
               <th className="p-3 font-semibold text-[var(--brand-clariant-gray)] text-left">URL</th>

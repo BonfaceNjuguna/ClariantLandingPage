@@ -36,7 +36,6 @@ const AppTableToolbar = ({
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
-
       <button
         onClick={onAdd}
         className="flex items-center gap-2 px-4 py-2 rounded transition-colors"
