@@ -1,5 +1,3 @@
-import React from "react";
-
 type PaginationProps = {
   currentPage: number;
   setCurrentPage: (page: number) => void;

@@ -15,7 +15,7 @@ app.include_router(apps.router, prefix="/apps", tags=["apps"])
 # Allow frontend on localhost to talk to backend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=["http://18.194.139.251:5173"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
