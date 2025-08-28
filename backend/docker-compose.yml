@@ -3,9 +3,9 @@ services:
     image: postgres:15
     container_name: postgres-db
     environment:
-      POSTGRES_DB: appdb
-      POSTGRES_USER: appuser
-      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: clariantlandingpagedb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: StrongDbPasswordHere@2025
     ports:
       - "5432:5432"
     volumes:
@@ -20,6 +20,16 @@ services:
       - db
     volumes:
       - ./backend/app:/app/app
+
+  frontend:
+    build:
+      context: ../frontend
+    ports:
+      - "5173:5173"
+    env_file:
+      - ../frontend/.env
+    depends_on:
+      - backend
 
 volumes:
   postgres_data:

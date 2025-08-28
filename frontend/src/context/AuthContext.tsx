@@ -1,5 +1,12 @@
 import { createContext, useContext, useState, useEffect } from "react";
 
+export interface AuthUser {
+  email: string;
+  name: string;
+  token: string;
+  provider: "google" | "microsoft";
+}
+
 interface User {
   email: string;
   name: string;
