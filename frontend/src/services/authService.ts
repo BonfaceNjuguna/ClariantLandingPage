@@ -15,7 +15,7 @@ export const loginWithToken = async (
   return {
     email: res.data.user.email,
     name: res.data.user.name,
-    token,
+    token: res.data.access_token, // Use the JWT from the backend
     provider,
   };
 };
