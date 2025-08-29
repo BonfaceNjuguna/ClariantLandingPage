@@ -21,10 +21,13 @@ async def get_current_user(token: str = Depends(oauth_scheme), db: Session = Dep
         payload = decode_jwt_token(token)
     except Exception:
         raise HTTPException(status_code=401, detail="Invalid token or expired token")
+    
     email = payload.get("sub") or payload.get("email")
     if not email:
         raise HTTPException(status_code=401, detail="Invalid token payload")
+    
     user = db.query(User).filter(User.email == email).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
+    
     return user
