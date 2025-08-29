@@ -18,12 +18,9 @@ def get_db():
 
 async def get_current_user(token: str = Depends(oauth_scheme), db: Session = Depends(get_db)) -> User:
     try:
-        payload = await verify_google_token(token)
+        payload = decode_jwt_token(token)
     except Exception:
-        try:
-            payload = decode_jwt_token(token)
-        except Exception:
-            raise HTTPException(status_code=401, detail="Invalid token")
+        raise HTTPException(status_code=401, detail="Invalid token or expired token")
     email = payload.get("sub") or payload.get("email")
     if not email:
         raise HTTPException(status_code=401, detail="Invalid token payload")

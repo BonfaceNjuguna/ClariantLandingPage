@@ -3,6 +3,7 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     DATABASE_URL: str
     GOOGLE_CLIENT_ID: str
+    MS_CLIENT_ID: str
     WHITELISTED_EMAIL: str
     JWT_SECRET: str
     SMTP_USER: str
@@ -10,5 +11,6 @@ class Settings(BaseSettings):
 
     class Config:
         env_file = ".env"
+        extra = "ignore"
 
 settings = Settings()

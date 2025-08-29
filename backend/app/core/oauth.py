@@ -1,7 +1,6 @@
 import httpx
 from fastapi import HTTPException
 from jose import jwt
-import json
 from app.core.config import settings
 
 # Microsoft OpenID metadata
@@ -17,43 +16,67 @@ async def verify_google_token(id_token: str):
 
 async def verify_microsoft_token(access_token: str):
     async with httpx.AsyncClient() as client:
-        # Get MS OIDC config
-        config = await client.get(MS_OIDC_DISCOVERY)
-        jwks_uri = config.json()["jwks_uri"]
-        issuer = config.json()["issuer"]
+        # Get MS OIDC config to find the jwks_uri
+        config_response = await client.get(MS_OIDC_DISCOVERY)
+        if config_response.status_code != 200:
+            raise HTTPException(status_code=500, detail="Could not retrieve Microsoft OIDC configuration")
+        
+        config = config_response.json()
+        jwks_uri = config["jwks_uri"]
 
         # Get public keys
-        jwks_resp = await client.get(jwks_uri)
-        keys = jwks_resp.json()["keys"]
+        jwks_response = await client.get(jwks_uri)
+        if jwks_response.status_code != 200:
+            raise HTTPException(status_code=500, detail="Could not retrieve Microsoft JWKS")
+            
+        jwks = jwks_response.json()
 
-    # Decode token header
-    unverified_header = jwt.get_unverified_header(access_token)
-    key = next((k for k in keys if k["kid"] == unverified_header["kid"]), None)
+    try:
+        unverified_header = jwt.get_unverified_header(access_token)
+        kid = unverified_header.get("kid")
+        
+        key = next((k for k in jwks["keys"] if k["kid"] == kid), None)
+        if not key:
+            raise HTTPException(status_code=401, detail="Unable to find a matching key for token")
 
-    if not key:
-        raise HTTPException(status_code=401, detail="Unable to find key for Microsoft token")
+        # Decode the token without issuer validation first
+        payload = jwt.decode(
+            access_token,
+            key,
+            algorithms=[unverified_header.get("alg")],
+            audience=settings.MS_CLIENT_ID,
+            options={"verify_issuer": False} # We'll verify issuer manually
+        )
 
-    # Build public key
-    from jose import jwk
-    from jose.utils import base64url_decode
+        # Manual issuer validation for multi-tenant apps
+        tenant_id = payload.get("tid")
+        if not tenant_id:
+            raise HTTPException(status_code=401, detail="'tid' claim not found in token")
 
-    public_key = jwk.construct(key)
-    message, encoded_sig = access_token.rsplit(".", 1)
-    decoded_sig = base64url_decode(encoded_sig.encode())
+        expected_issuer = f"https://login.microsoftonline.com/{tenant_id}/v2.0"
+        if payload.get("iss") != expected_issuer:
+            raise HTTPException(status_code=401, detail=f"Invalid issuer. Expected {expected_issuer}, got {payload.get('iss')}")
 
-    if not public_key.verify(message.encode(), decoded_sig):
-        raise HTTPException(status_code=401, detail="Invalid Microsoft token")
+        return validate_email_domain(payload)
 
-    payload = jwt.get_unverified_claims(access_token)
+    except jwt.ExpiredSignatureError as e:
+        print(f"Token verification failed: {e}")
+        raise HTTPException(status_code=401, detail="Microsoft token has expired")
+    except jwt.JWTClaimsError as e:
+        print(f"Token verification failed: {e}")
+        raise HTTPException(status_code=401, detail=f"Invalid claims: {e}")
+    except Exception as e:
+        print(f"Token verification failed: {e}")
+        raise HTTPException(status_code=401, detail=f"Invalid Microsoft token: {e}")
 
-    if payload.get("iss") != issuer:
-        raise HTTPException(status_code=401, detail="Invalid issuer")
-
-    return validate_email_domain(payload)
 
 def validate_email_domain(data: dict):
     email = data.get("email")
     name = data.get("name", "")
+
+    if not email:
+        # For Microsoft tokens, the email is often in the 'preferred_username' claim
+        email = data.get("preferred_username")
 
     if not email:
         raise HTTPException(status_code=400, detail="Email not found in token")

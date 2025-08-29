@@ -10,7 +10,6 @@ from typing import List
 router = APIRouter()
 
 @router.get("/", response_model=dict)
-@router.get("/", response_model=dict)
 def list_apps(
     db: Session = Depends(get_db),
     user: User = Depends(get_current_user),

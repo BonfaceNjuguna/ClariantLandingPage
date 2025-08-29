@@ -19,7 +19,7 @@ services:
     depends_on:
       - db
     volumes:
-      - ./backend/app:/app/app
+      - ./app:/app/app
 
   frontend:
     build:

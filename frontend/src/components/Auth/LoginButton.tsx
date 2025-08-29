@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
 import { useAuth } from "../../context/AuthContext";
 import { loginWithToken } from "../../services/authService";
@@ -12,24 +12,28 @@ const msalInstance = new PublicClientApplication(msalConfig);
 const LoginButton = () => {
     const { setUser } = useAuth();
     const navigate = useNavigate();
+    const [msalReady, setMsalReady] = useState(false);
 
-    // Attempt silent Microsoft login on mount
     useEffect(() => {
-        const accounts = msalInstance.getAllAccounts();
-        if (accounts.length > 0) {
-            msalInstance.acquireTokenSilent({
-                account: accounts[0],
-                scopes: ["openid", "email", "profile"],
-            })
-            .then(async (response) => {
-                const user = await loginWithToken(response.idToken, "microsoft");
-                setUser(user);
-                navigate("/dashboard");
-            })
-            .catch(() => {
-                // Silent login failed, do nothing (user must click login)
-            });
-        }
+        msalInstance.initialize().then(() => {
+            setMsalReady(true);
+            // Attempt silent Microsoft login on mount
+            const accounts = msalInstance.getAllAccounts();
+            if (accounts.length > 0) {
+                msalInstance.acquireTokenSilent({
+                    account: accounts[0],
+                    scopes: ["openid", "email", "profile"],
+                })
+                .then(async (response) => {
+                    const user = await loginWithToken(response.idToken, "microsoft");
+                    setUser(user);
+                    navigate("/dashboard");
+                })
+                .catch(() => {
+                    // Silent login failed, do nothing
+                });
+            }
+        });
     }, [setUser, navigate]);
 
     const handleGoogleSuccess = async (credentialResponse: any) => {
@@ -45,12 +49,13 @@ const LoginButton = () => {
     };
 
     const handleMicrosoftLogin = async () => {
+        if (!msalReady) return;
         try {
             const loginResponse = await msalInstance.loginPopup({
                 scopes: ["openid", "email", "profile"],
             });
 
-            const accessToken = loginResponse.idToken; // Azure returns ID token here
+            const accessToken = loginResponse.idToken;
             const user = await loginWithToken(accessToken, "microsoft");
             setUser(user);
             navigate("/dashboard");
@@ -72,6 +77,7 @@ const LoginButton = () => {
             <button
                 onClick={handleMicrosoftLogin}
                 className="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-sm hover:shadow-md transition-colors hover:bg-gray-100"
+                disabled={!msalReady}
             >
                 <img src={MicrosoftLogo} alt="Microsoft" className="w-5 h-5" />
                 <span>Sign in with Microsoft</span>
