@@ -10,6 +10,11 @@ import { createAppEntry } from "../../services/appService";
 import { useAuth } from "../../context/AuthContext";
 import { deleteAppEntry, updateAppEntry } from "../../services/appService";
 
+type Feedback = {
+  message: string;
+  type: "success" | "error";
+};
+
 const AppTable = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const initialPage = parseInt(searchParams.get("page") || "1", 10);
@@ -22,15 +27,31 @@ const AppTable = () => {
   const [status, setStatus] = useState("");
   const [sortBy, setSortBy] = useState<"name" | "">("");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-  const { apps, total } = useAppEntries(perPage, currentPage, search, status, sortBy, sortOrder);
+  const [feedback, setFeedback] = useState<Feedback | null>(null);
+  const { apps, total, refetch } = useAppEntries(perPage, currentPage, search, status, sortBy, sortOrder);
+
+  useEffect(() => {
+    if (feedback) {
+      const timer = setTimeout(() => {
+        setFeedback(null);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [feedback]);
 
   const handleAddNew = async (data: AppEntryInput) => {
     if (!user) return;
+    if (!data.status) {
+      setFeedback({ message: "Status is required.", type: "error" });
+      return;
+    }
     try {
       await createAppEntry(data, user.token);
+      setFeedback({ message: "App created successfully!", type: "success" });
       setShowModal(false);
-      window.location.reload();
+      refetch();
     } catch (err) {
+      setFeedback({ message: "Error adding app.", type: "error" });
       console.error("Error adding app", err);
     }
   };
@@ -49,12 +70,18 @@ const AppTable = () => {
 
   const handleUpdate = async (data: AppEntryInput) => {
     if (!user || !editData) return;
+    if (!data.status) {
+      setFeedback({ message: "Status is required.", type: "error" });
+      return;
+    }
     try {
       await updateAppEntry(editData.id, data, user.token);
+      setFeedback({ message: "App updated successfully!", type: "success" });
       setShowModal(false);
       setEditData(null);
-      window.location.reload();
+      refetch();
     } catch (err) {
+      setFeedback({ message: "Error updating app.", type: "error" });
       console.error("Error updating app", err);
     }
   };
@@ -64,8 +91,10 @@ const AppTable = () => {
     if (!window.confirm("Are you sure you want to delete this app?")) return;
     try {
       await deleteAppEntry(id, user.token);
-      window.location.reload();
+      setFeedback({ message: "App deleted successfully!", type: "success" });
+      refetch();
     } catch (err) {
+      setFeedback({ message: "Error deleting app.", type: "error" });
       console.error("Error deleting app", err);
     }
   };
@@ -77,6 +106,18 @@ const AppTable = () => {
 
   return (
     <div className="bg-white rounded-xl shadow-lg p-6 mt-6">
+      {feedback && (
+        <div
+          className={`mb-4 px-4 py-2 rounded text-white flex justify-between items-center ${
+            feedback.type === "success" ? "bg-green-500" : "bg-red-500"
+          }`}
+        >
+          {feedback.message}
+          <button onClick={() => setFeedback(null)} className="ml-4">
+            &times;
+          </button>
+        </div>
+      )}
       <AppTableToolbar
         perPage={perPage}
         setPerPage={setPerPage}

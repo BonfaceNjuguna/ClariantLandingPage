@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { getAppEntries } from "../services/appService";
 import { useAuth } from "../context/AuthContext";
 import type { AppEntry } from "../types/index";
@@ -14,6 +14,11 @@ export const useAppEntries = (
   const { user } = useAuth();
   const [apps, setApps] = useState<AppEntry[]>([]);
   const [total, setTotal] = useState(0);
+  const [refetchIndex, setRefetchIndex] = useState(0);
+
+  const refetch = useCallback(() => {
+    setRefetchIndex((prev) => prev + 1);
+  }, []);
 
   useEffect(() => {
     if (!user || !user.token) return;
@@ -23,7 +28,7 @@ export const useAppEntries = (
       setTotal(result.total);
     };
     fetch();
-  }, [perPage, currentPage, search, status, sortBy, sortOrder, user]);
+  }, [perPage, currentPage, search, status, sortBy, sortOrder, user, refetchIndex]);
 
-  return { apps, total };
+  return { apps, total, refetch };
 };

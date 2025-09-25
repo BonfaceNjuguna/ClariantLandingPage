@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import type { AppEntry } from "../../types/index";
+import type { AppEntry, AppEntryInput } from "../../types/index";
 import { useEffect } from "react";
 
 type Props = {
@@ -7,15 +7,6 @@ type Props = {
   onClose: () => void;
   onSubmit: (data: AppEntryInput) => void;
   initialData?: AppEntry | null;
-};
-
-export type AppEntryInput = {
-  name: string;
-  owner: string;
-  description: string;
-  url: string;
-  comment: string;
-  status: string;
 };
 
 const AppFormModal = ({ isOpen, onClose, onSubmit, initialData }: Props) => {
@@ -91,7 +82,7 @@ const AppFormModal = ({ isOpen, onClose, onSubmit, initialData }: Props) => {
           {errors.comment && <p className="text-red-600 text-sm">{errors.comment.message}</p>}
 
           <select
-            {...register("status")}
+            {...register("status", { required: "Status is required" })}
             className="border w-full px-3 py-2 rounded"
           >
             <option value="">Select Status</option>
