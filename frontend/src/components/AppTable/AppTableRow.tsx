@@ -13,12 +13,12 @@ const AppTableRow = ({
   className?: string;
 }) => {
   return (
-    <tr className={`transition hover:bg-blue-50 text-[var(--brand-clariant-gray)] ${className}`}>
+    <tr className={`transition hover:bg-[#D9F0FF] text-[#333332] ${className}`}>
       <td className="p-3 text-left">{app.name}</td>
       <td className="p-3 text-left">{app.owner}</td>
       <td className="p-3 text-left">{app.description}</td>
       <td className="p-3 text-left">
-        <a href={app.url} target="_blank" className="text-blue-500 underline">{app.url}</a>
+        <a href={app.url} target="_blank" className="text-[#003366] underline">{app.url}</a>
       </td>
       <td className="p-3 min-w-[200px] text-left">{app.comment}</td>
       <td className="p-3 text-left">
@@ -28,8 +28,8 @@ const AppTableRow = ({
       </td>
       <td className="p-3 text-left">
         <div className="flex gap-2">
-          <button className="text-[var(--brand-clariant-gray)] hover:text-[var(--brand-clariant-gray)]" onClick={onEdit}><FaEdit /></button>
-          <button className="text-[var(--brand-ept-green)] hover:text-[var(--brand-ept-green)]" onClick={onDelete}><FaTrash /></button>
+          <button className="text-[#333332] hover:text-[#333332]" onClick={onEdit}><FaEdit /></button>
+          <button className="text-red-500 hover:text-red-700" onClick={onDelete}><FaTrash /></button>
         </div>
       </td>
     </tr>

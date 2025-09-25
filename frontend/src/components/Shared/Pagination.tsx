@@ -17,7 +17,7 @@ const Pagination = ({
   return (
     <div className="flex justify-center items-center mt-4 gap-2">
       <button
-        className="px-3 py-1 border rounded disabled:opacity-50 text-[var(--brand-clariant-gray)] hover:bg-[var(--brand-ept-green)]"
+        className="px-3 py-1 border rounded disabled:opacity-50 text-brand-clariantGray hover:bg-brand-eptGreen"
         onClick={() => setCurrentPage(currentPage - 1)}
         disabled={currentPage === 1}
       >
@@ -29,8 +29,8 @@ const Pagination = ({
           className={`px-3 py-1 border rounded transition
             ${
               page === currentPage
-                ? "bg-[var(--brand-ept-green)] text-[var(--brand-clariant-gray)] border-[var(--brand-ept-green)]"
-                : "bg-white text-[var(--brand-clariant-gray)] hover:bg-[var(--brand-ept-green)]"
+                ? "bg-brand-clariantBlue text-white border-brand-clariantBlue"
+                : "bg-white text-brand-clariantGray hover:bg-brand-eptGreen"
             }
           `}
           onClick={() => setCurrentPage(page)}
@@ -40,13 +40,13 @@ const Pagination = ({
         </button>
       ))}
       <button
-        className="px-3 py-1 border rounded disabled:opacity-50 text-[var(--brand-clariant-gray)] hover:bg-[var(--brand-ept-green)]"
+        className="px-3 py-1 border rounded disabled:opacity-50 text-brand-clariantGray hover:bg-brand-eptGreen"
         onClick={() => setCurrentPage(currentPage + 1)}
         disabled={currentPage >= maxPage}
       >
         Next
       </button>
-      <span className="ml-4 text-gray-500 text-sm">
+      <span className="ml-4 text-brand-clariantGray text-sm">
         Page {currentPage} of {maxPage}
       </span>
     </div>

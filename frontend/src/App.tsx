@@ -1,6 +1,5 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { GoogleOAuthProvider } from "@react-oauth/google";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import LoginPage from "./pages/LoginPage";
 import Footer from './components/Footer/Footer';
@@ -15,7 +14,6 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
 
 function App() {
   return (
-    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID!}>
       <AuthProvider>
         <Router>
           <Routes>
@@ -32,7 +30,6 @@ function App() {
           <Footer />
         </Router>
       </AuthProvider>
-    </GoogleOAuthProvider>
   );
 }
 

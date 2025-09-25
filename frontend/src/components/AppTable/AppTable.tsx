@@ -97,8 +97,8 @@ const AppTable = () => {
                   ? "bg-green-100 text-green-700 border-green-300 font-semibold"
                   : s === "Inactive"
                   ? "bg-gray-200 text-gray-700 border-gray-400 font-semibold"
-                  : "bg-[var(--brand-ept-green)] text-[var(--brand-clariant-gray)] border-[var(--brand-ept-green)] font-semibold"
-                : "bg-white text-[var(--brand-clariant-gray)] hover:bg-[var(--brand-ept-green)]"
+                  : "bg-[#003366] text-white border-[#003366] font-semibold"
+                : "bg-white text-[#333332] hover:bg-[#D9F0FF]"
             }
           `}
         >
@@ -109,10 +109,10 @@ const AppTable = () => {
 
       <div className="overflow-x-auto">
         <table className="min-w-full text-sm rounded-lg overflow-hidden">
-          <thead className="bg-gradient-to-r from-blue-50 to-blue-100">
+          <thead className="bg-[#003366] text-white">
             <tr>
               <th
-                className="p-3 font-semibold text-[var(--brand-clariant-gray)] text-left cursor-pointer select-none"
+                className="p-3 font-semibold text-left cursor-pointer select-none"
                 onClick={handleSortName}
               >
                 Name
@@ -120,12 +120,12 @@ const AppTable = () => {
                   {sortOrder === "asc" ? "▲" : "▼"}
                 </span>
               </th>              
-              <th className="p-3 font-semibold text-[var(--brand-clariant-gray)] text-left">Owner</th>
-              <th className="p-3 font-semibold text-[var(--brand-clariant-gray)] text-left">Description</th>
-              <th className="p-3 font-semibold text-[var(--brand-clariant-gray)] text-left">URL</th>
-              <th className="p-3 font-semibold text-[var(--brand-clariant-gray)] min-w-[200px] text-left">Comment</th>
-              <th className="p-3 font-semibold text-[var(--brand-clariant-gray)] text-left">Status</th>
-              <th className="p-3 font-semibold text-[var(--brand-clariant-gray)] text-left">Actions</th>
+              <th className="p-3 font-semibold text-left">Owner</th>
+              <th className="p-3 font-semibold text-left">Description</th>
+              <th className="p-3 font-semibold text-left">URL</th>
+              <th className="p-3 font-semibold min-w-[200px] text-left">Comment</th>
+              <th className="p-3 font-semibold text-left">Status</th>
+              <th className="p-3 font-semibold text-left">Actions</th>
             </tr>
           </thead>
           <tbody>

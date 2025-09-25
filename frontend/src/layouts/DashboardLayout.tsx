@@ -6,7 +6,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const { user, setUser } = useAuth();
 
   return (
-    <div className="p-6">
+    <div className="p-6 max-w-screen-xl mx-auto px-8">
       <Header />
       <div className="flex items-center justify-between mt-6 mb-2">
         <h1 className="text-2xl font-bold ml-6 text-[var(--brand-clariant-gray)]">EPT Digital Solution Apps</h1>

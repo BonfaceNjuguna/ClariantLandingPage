@@ -44,7 +44,7 @@ const AppFormModal = ({ isOpen, onClose, onSubmit, initialData }: Props) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 text-[var(--brand-clariant-gray)]">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 text-brand-clariantGray">
       <div className="bg-white p-6 rounded-md shadow-lg w-[90%] max-w-xl">
         <h2 className="text-xl font-bold mb-4">
           {initialData ? "Edit App" : "Add New App"}
@@ -110,7 +110,7 @@ const AppFormModal = ({ isOpen, onClose, onSubmit, initialData }: Props) => {
             </button>
             <button
               type="submit"
-              className="px-4 py-2 rounded bg-[var(--brand-ept-green)] text-[var(--brand-clariant-gray)] hover:bg-[var(--brand-clariant-gray)] hover:text-[var(--brand-ept-green)]"
+              className="px-4 py-2 rounded bg-brand-clariantBlue text-white hover:bg-brand-clariantBlueDark"
             >
               {initialData ? "Update" : "Create"}
             </button>
