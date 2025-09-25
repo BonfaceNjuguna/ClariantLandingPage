@@ -43,8 +43,7 @@ export function LoginPage() {
       const loginResponse = await msalInstance.loginPopup({
         scopes: ["openid", "email", "profile"],
       });
-
-      const accessToken = loginResponse.idToken;
+      const accessToken = loginResponse.accessToken;
       const user = await loginWithToken(accessToken, "microsoft");
       setUser(user);
       navigate("/dashboard");

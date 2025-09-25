@@ -40,13 +40,18 @@ async def verify_microsoft_token(access_token: str):
             raise HTTPException(status_code=401, detail="Unable to find a matching key for token")
 
         # Decode the token without issuer validation first
-        payload = jwt.decode(
-            access_token,
-            key,
-            algorithms=[unverified_header.get("alg")],
-            audience=settings.MS_CLIENT_ID,
-            options={"verify_issuer": False} # We'll verify issuer manually
-        )
+        try:
+            print(f"Access Token: {access_token}")
+            payload = jwt.decode(
+                access_token,
+                key,
+                algorithms=[unverified_header.get("alg")],
+                audience=settings.MS_CLIENT_ID,
+                options={"verify_issuer": False} # We'll verify issuer manually
+            )
+        except Exception as e:
+            print(f"Error decoding token: {e}")
+            raise HTTPException(status_code=500, detail=f"Error decoding token: {e}")
 
         # Manual issuer validation for multi-tenant apps
         tenant_id = payload.get("tid")

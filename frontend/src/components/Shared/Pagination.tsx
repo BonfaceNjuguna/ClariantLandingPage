@@ -29,8 +29,8 @@ const Pagination = ({
           className={`px-3 py-1 border rounded transition
             ${
               page === currentPage
-                ? "bg-brand-clariantBlue text-white border-brand-clariantBlue"
-                : "bg-white text-brand-clariantGray hover:bg-brand-eptGreen"
+                ? "bg-[#003366] text-white border-[#003366]"
+                : "bg-white text-[#003366] hover:bg-[#D9F0FF]"
             }
           `}
           onClick={() => setCurrentPage(page)}

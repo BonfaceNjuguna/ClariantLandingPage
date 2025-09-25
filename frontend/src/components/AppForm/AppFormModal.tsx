@@ -110,7 +110,7 @@ const AppFormModal = ({ isOpen, onClose, onSubmit, initialData }: Props) => {
             </button>
             <button
               type="submit"
-              className="px-4 py-2 rounded bg-brand-clariantBlue text-white hover:bg-brand-clariantBlueDark"
+              className="px-4 py-2 rounded bg-[#003366] text-white hover:bg-[#002244]"
             >
               {initialData ? "Update" : "Create"}
             </button>
