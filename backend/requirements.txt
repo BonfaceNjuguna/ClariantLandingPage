@@ -9,3 +9,5 @@ alembic
 python-jose
 PyJWT
 email-validator
+pytest
+pytest-cov

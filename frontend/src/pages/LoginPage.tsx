@@ -41,10 +41,10 @@ export function LoginPage() {
     if (!msalReady) return;
     try {
       const loginResponse = await msalInstance.loginPopup({
-        scopes: ["openid", "email", "profile", "User.Read"],
+        scopes: ["openid", "email", "profile"],
       });
-      const accessToken = loginResponse.accessToken;
-      const user = await loginWithToken(accessToken, "microsoft");
+      const idToken = loginResponse.idToken;
+      const user = await loginWithToken(idToken, "microsoft");
       setUser(user);
       navigate("/dashboard");
     } catch (err) {
