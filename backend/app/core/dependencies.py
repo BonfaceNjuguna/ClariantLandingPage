@@ -2,7 +2,6 @@ from fastapi import Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.core.database import SessionLocal
 from app.models.user import User
-from app.core.oauth import verify_google_token
 from fastapi.security import OAuth2PasswordBearer
 from app.core.security import decode_jwt_token
 

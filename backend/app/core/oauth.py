@@ -3,16 +3,8 @@ from fastapi import HTTPException
 from jose import jwt
 from app.core.config import settings
 
-# Microsoft OpenID metadata
+# Microsoft OpenID
 MS_OIDC_DISCOVERY = "https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration"
-
-async def verify_google_token(id_token: str):
-    async with httpx.AsyncClient() as client:
-        response = await client.get(f"https://oauth2.googleapis.com/tokeninfo?id_token={id_token}")
-        if response.status_code != 200:
-            raise HTTPException(status_code=401, detail="Invalid Google token")
-        data = response.json()
-        return validate_email_domain(data)
 
 async def verify_microsoft_token(access_token: str):
     async with httpx.AsyncClient() as client:
@@ -47,7 +39,7 @@ async def verify_microsoft_token(access_token: str):
                 key,
                 algorithms=[unverified_header.get("alg")],
                 audience=settings.MS_CLIENT_ID,
-                options={"verify_issuer": False} # We'll verify issuer manually
+                options={"verify_issuer": False}
             )
         except Exception as e:
             print(f"Error decoding token: {e}")
@@ -80,7 +72,6 @@ def validate_email_domain(data: dict):
     name = data.get("name", "")
 
     if not email:
-        # For Microsoft tokens, the email is often in the 'preferred_username' claim
         email = data.get("preferred_username")
 
     if not email:

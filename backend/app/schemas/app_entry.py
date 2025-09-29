@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional, Literal
+from pydantic import ConfigDict
 
 class AppBase(BaseModel):
     name: str
@@ -15,5 +16,4 @@ class AppCreate(AppBase):
 class AppOut(AppBase):
     id: int
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
